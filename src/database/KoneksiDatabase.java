@@ -13,8 +13,8 @@ import javax.swing.JOptionPane;
  */
 public class KoneksiDatabase {
     private static Connection conn;
-    private Statement statement;
-    private static final String db_url = "jdbc:mysql://localhost:3306/rental_kendaraan";
+    private static Statement statement;
+    private static final String db_url = "jdbc:mysql://localhost:3306/uaspbo";
     private static final String username = "root";
     private static final String password = "";
     private static final String driverName = "com.mysql.jdbc.Driver";
