@@ -31,7 +31,7 @@ public class KoneksiDatabase {
                 System.out.println("Koneksi ke database gagal!"); 
             }
         } catch (ClassNotFoundException ex) {
-            System.out.println("Driver tidak ditemukan"); 
+            System.out.println("Driver tidak ditemukan!"); 
         }
         return conn;
     }
@@ -41,7 +41,7 @@ public class KoneksiDatabase {
         try{
             conn.close();
         } catch(Exception ex){
-            JOptionPane.showMessageDialog(null, "koneksi gagal ditutup");
+            JOptionPane.showMessageDialog(null, "koneksi gagal ditutup!");
         }
         return conn;
     }

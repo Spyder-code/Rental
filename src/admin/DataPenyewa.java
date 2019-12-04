@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package peminjamankendaraan;
+package admin;
 
+
+import database.KoneksiDatabase;
+import java.sql.*;
+import javax.swing.JOptionPane;
+import database.QueryDatabase;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -13,7 +18,9 @@ import javax.swing.table.DefaultTableModel;
 public class DataPenyewa extends javax.swing.JFrame {
     
     DefaultTableModel model;
-    
+    private Connection conn;
+    private Statement st;
+    private ResultSet rs;
     
 
     /**
@@ -22,9 +29,14 @@ public class DataPenyewa extends javax.swing.JFrame {
     public DataPenyewa() {
         initComponents();
         // buat sendiri
-        String[] judul = {"NAMA", "ALAMAT", "NO TELP", "EMAIL", "NO KTP"};
+        String[] judul = {"ID" ,"NAMA", "ALAMAT", "NO TELP", "EMAIL", "NO KTP"};
         model = new DefaultTableModel(judul, 0);
         jTable1.setModel(model);
+        try {   
+            tampilkan();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
     }
 
     /**
@@ -41,8 +53,9 @@ public class DataPenyewa extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel1.setText("Data Peminjam");
@@ -58,8 +71,14 @@ public class DataPenyewa extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Berikut merupakan data dari peminjam kendaraan ");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/hapusData.png"))); // NOI18N
@@ -67,6 +86,14 @@ public class DataPenyewa extends javax.swing.JFrame {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/backArrow.png"))); // NOI18N
+        jButton2.setText("Kembali");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -83,7 +110,10 @@ public class DataPenyewa extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 779, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 23, Short.MAX_VALUE))
         );
@@ -97,16 +127,44 @@ public class DataPenyewa extends javax.swing.JFrame {
                 .addGap(63, 63, 63)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addContainerGap(117, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        int i = jTable1.getSelectedRow();
+        if(i > -1){
+            String index = model.getValueAt(i, 0).toString();
+            int input = JOptionPane.showConfirmDialog(null, "apakah anda yakin?");
+            if(input == 0){       
+                try{
+                    int hasil = QueryDatabase.queryHapus("peminjam", "id_peminjam = " + index);
+                    if(hasil > 0){
+                        JOptionPane.showMessageDialog(null, "data berhasil dihapus");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "data gagal dihapus");
+                    }
+                    tampilkan();
+                    KoneksiDatabase.tutupKoneksi();
+                } catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, ex); 
+                }
+            }    
+        }    
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+         
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -145,9 +203,26 @@ public class DataPenyewa extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    private void tampilkan() throws SQLException {
+        int row = jTable1.getRowCount();
+        for(int a=0; a<row; a++){
+            model.removeRow(0);
+        }
+        try {
+            rs = QueryDatabase.querySelectSemua("peminjam");
+            while(rs.next()){
+                String[] data = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)};
+                model.addRow(data);
+            }    
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
 }

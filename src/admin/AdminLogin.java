@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package peminjamankendaraan;
+package admin;
 
 import database.KoneksiDatabase;
 import java.sql.*;
 import javax.swing.JOptionPane;
+import database.QueryDatabase;
 /**
  *
  * @author HP
@@ -117,15 +118,15 @@ public class AdminLogin extends javax.swing.JFrame {
         String password = jTextField2.getText();
         
         try{
-            conn = KoneksiDatabase.dapatkanKoneksi();
+//            conn = KoneksiDatabase.dapatkanKoneksi();
+//            st = conn.createStatement();
+//            String sql = "SELECT * FROM admin";
+//            rs = st.executeQuery(sql);
             
-            st = conn.createStatement();
-            String sql = "SELECT * FROM admin";
-            rs = st.executeQuery(sql);
+            rs = QueryDatabase.querySelectSemua("admin");
             while(rs.next()){
                 String user = rs.getString("username");
-                String pass = rs.getString("password");
-                
+                String pass = rs.getString("password");                
                 if(username.equals(user) && password.equals(pass)) {
                     JOptionPane.showMessageDialog(null, "selamat datang");
                     this.dispose();
@@ -136,7 +137,7 @@ public class AdminLogin extends javax.swing.JFrame {
                     break;
                 }
             }     
-            
+            // setelah membuka koneksi jgn lupa ditutup
             KoneksiDatabase.tutupKoneksi();
         } catch(Exception ex){
             JOptionPane.showMessageDialog(null, ex);
