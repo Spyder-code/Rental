@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package peminjamankendaraan;
+package admin;
 
-import javax.swing.table.DefaultTableModel;
+import database.KoneksiDatabase;
 import java.sql.*;
 import javax.swing.JOptionPane;
-// import package database
-import database.KoneksiDatabase;
+import database.QueryDatabase;
+import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -95,10 +95,10 @@ public class TambahKendaraan extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setText("Tipe        :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1: Motor", "2: Mobil" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2" }));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel6.setText("Merk       :");
+        jLabel6.setText("Merek      :");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setText("Model      :");
@@ -159,28 +159,28 @@ public class TambahKendaraan extends javax.swing.JFrame {
                         .addComponent(jButton1)
                         .addGap(48, 48, 48)
                         .addComponent(jButton2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton4)
+                        .addGap(43, 43, 43)
+                        .addComponent(jButton3)
+                        .addGap(14, 14, 14))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton4)
-                                .addGap(43, 43, 43)
-                                .addComponent(jButton3)
-                                .addGap(14, 14, 14))
+                                .addComponent(jLabel2)
+                                .addGap(21, 21, 21))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4))
-                                .addGap(20, 20, 20)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3))
+                                .addGap(18, 18, 18)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)))))
                 .addGap(70, 70, 70))
         );
         layout.setVerticalGroup(
@@ -204,16 +204,16 @@ public class TambahKendaraan extends javax.swing.JFrame {
                             .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
                         .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -233,19 +233,26 @@ public class TambahKendaraan extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String tipe = jComboBox1.getSelectedItem().toString();
         String merek = jTextField4.getText();
-        String model = jTextField5.getText();
-        String platNomor = jTextField2.getText();
-        int hargaSewa = Integer.parseInt(jTextField1.getText());
-        String tahunProduksi = jTextField3.getText();
-        
-        
+        String modell = jTextField5.getText();
+        String tahunProduksi = jTextField2.getText();
+        String platNomor = jTextField1.getText();
+        String hargaSewa = jTextField3.getText();
+
+        String[] isiKolom = {tipe, merek, modell, tahunProduksi, platNomor, hargaSewa};
+        String[] namaKolom = {"tipe", "merek", "model", "tahun_produksi", "plat_nomor", "harga_sewa"};
         try{
-            conn = KoneksiDatabase.dapatkanKoneksi();
-            JOptionPane.showMessageDialog(null, "koneksi berhasil");
+            int hasil = QueryDatabase.queryMasukan("kendaraan", namaKolom, isiKolom);
+            if(hasil > 0){
+                JOptionPane.showMessageDialog(null, "data berhasil ditambah");
+            } else {
+                JOptionPane.showMessageDialog(null, "data gagal ditambah!");
+            }
+            tampilkan();
             KoneksiDatabase.tutupKoneksi();
         } catch(Exception ex){
-            JOptionPane.showMessageDialog(null, ex);
+            JOptionPane.showMessageDialog(null, "apa");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -305,4 +312,22 @@ public class TambahKendaraan extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
+
+    private void tampilkan() throws SQLException {
+        int row = jTable1.getRowCount();
+        for(int a=0; a<row; a++){
+            model.removeRow(0);
+        }
+        try {
+            rs = QueryDatabase.querySelectSemua("kendaraan");
+            while(rs.next()){
+                String[] data = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)};
+                model.addRow(data);
+            }    
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    
 }
