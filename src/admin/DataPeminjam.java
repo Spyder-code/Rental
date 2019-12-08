@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author h
  */
-public class DataPenyewa extends javax.swing.JFrame {
+public class DataPeminjam extends javax.swing.JFrame {
     
     DefaultTableModel model;
     private Connection conn;
@@ -26,7 +26,7 @@ public class DataPenyewa extends javax.swing.JFrame {
     /**
      * Creates new form DataPenyewa
      */
-    public DataPenyewa() {
+    public DataPeminjam() {
         initComponents();
         // buat sendiri
         String[] judul = {"ID" ,"NAMA", "ALAMAT", "NO TELP", "EMAIL", "NO KTP"};
@@ -183,20 +183,21 @@ public class DataPenyewa extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DataPenyewa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DataPeminjam.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DataPenyewa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DataPeminjam.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DataPenyewa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DataPeminjam.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DataPenyewa.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DataPeminjam.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DataPenyewa().setVisible(true);
+                new DataPeminjam().setVisible(true);
             }
         });
     }

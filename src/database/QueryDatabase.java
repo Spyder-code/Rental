@@ -45,8 +45,7 @@ public class QueryDatabase {
         return hasil;
     }
      
-    
-    
+    //-------------------------------------------------------
     
     
     // statement SELECT
@@ -55,14 +54,11 @@ public class QueryDatabase {
         return eksekusiQuery(sql);
     }
     
-    
-    
     // statement DELETE
     public static int queryHapus(String namaTabel, String kondisi) {
         sql = "DELETE FROM " + namaTabel + " WHERE " + kondisi;
         return eksekusiUpdate(sql);
     }
-    
     
     // statement INSERT
     public static int queryMasukan(String namaTabel, String[] namaKolom, String[] isiTabel){
@@ -84,5 +80,16 @@ public class QueryDatabase {
         return eksekusiUpdate(sql);
     }
     
-    
+    // statement UPDATE
+    public static int queryUpdate(String namaTabel, String[] namaKolom, String[] isiKolom, String kondisi){
+        sql = "UPDATE " + namaTabel + " SET ";
+        for (int i = 0; i <= namaKolom.length - 1; i++) {
+            sql += namaKolom[i] + "='" + isiKolom[i] + "'";
+            if (i < namaKolom.length - 1) {
+                sql += ", ";
+            }
+        }
+        sql += " WHERE " + kondisi;
+        return eksekusiUpdate(sql);
+    }
 }

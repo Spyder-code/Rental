@@ -118,11 +118,6 @@ public class AdminLogin extends javax.swing.JFrame {
         String password = jTextField2.getText();
         
         try{
-//            conn = KoneksiDatabase.dapatkanKoneksi();
-//            st = conn.createStatement();
-//            String sql = "SELECT * FROM admin";
-//            rs = st.executeQuery(sql);
-            
             rs = QueryDatabase.querySelectSemua("admin");
             while(rs.next()){
                 String user = rs.getString("username");
