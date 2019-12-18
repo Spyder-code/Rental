@@ -21,7 +21,7 @@ public class KoneksiDatabase {
     
     
     
-    // function untuk mendapatkan / membuka koneksi
+    // method untuk mendapatkan / membuka koneksi
     public static Connection dapatkanKoneksi() {
         try {
             Class.forName(driverName);
@@ -36,7 +36,7 @@ public class KoneksiDatabase {
         return conn;
     }
     
-    // function untuk menutup koneksi database
+    // method untuk menutup koneksi database
     public static Connection tutupKoneksi(){
         try{
             conn.close();

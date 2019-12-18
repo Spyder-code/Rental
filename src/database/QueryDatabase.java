@@ -5,9 +5,15 @@
  */
 package database;
 
-import database.KoneksiDatabase;
+
 import java.sql.*;
 import javax.swing.JOptionPane;
+//--------
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 /**
  *
  * @author h
@@ -20,6 +26,9 @@ public class QueryDatabase {
     private static Connection conn;
     private static String sql;
     private static int hasil;
+    //--------
+    private static FileInputStream inputStream;
+    private static PreparedStatement ps;
     
     
     // statement eksekusi query (untuk SELECT)
@@ -48,20 +57,23 @@ public class QueryDatabase {
     //-------------------------------------------------------
     
     
-    // statement SELECT
+    
+    
+    
+    // ------------------------------------ statement SELECT
     public static ResultSet querySelectSemua(String namaTabel){
         sql = "SELECT * FROM " + namaTabel;
         return eksekusiQuery(sql);
     }
     
-    // statement DELETE
+    // ------------------------------------ statement DELETE
     public static int queryHapus(String namaTabel, String kondisi) {
         sql = "DELETE FROM " + namaTabel + " WHERE " + kondisi;
         return eksekusiUpdate(sql);
     }
     
-    // statement INSERT
-    public static int queryMasukan(String namaTabel, String[] namaKolom, String[] isiTabel){
+    // ------------------------------------ statement INSERT
+    public static int queryMasukan(String namaTabel, String[] namaKolom, String[] isiKolom){
         sql = "INSERT INTO " + namaTabel + " (";
         for(int i = 0; i <= namaKolom.length - 1; i++){
             sql += namaKolom[i];
@@ -70,9 +82,9 @@ public class QueryDatabase {
             }
         }
         sql += ") VALUES (";
-        for (int i = 0; i <= isiTabel.length - 1; i++) {
-            sql += "'" + isiTabel[i] + "'";
-            if (i < isiTabel.length - 1) {
+        for (int i = 0; i <= isiKolom.length - 1; i++) {
+            sql += "'" + isiKolom[i] + "'";
+            if (i < isiKolom.length - 1) {
                 sql += ",";
             }
         }
@@ -80,7 +92,44 @@ public class QueryDatabase {
         return eksekusiUpdate(sql);
     }
     
-    // statement UPDATE
+    public static int queryMasukan(String namaTabel, String[] namaKolom, String[] isiKolom, String namaGambar) throws FileNotFoundException, SQLException, IOException{
+        File gambar = new File(namaGambar);
+        inputStream = new FileInputStream(gambar);
+        conn = KoneksiDatabase.dapatkanKoneksi();
+        sql = "INSERT INTO " + namaTabel + " (";
+        for(int i = 0; i <= namaKolom.length - 1; i++){
+            sql += namaKolom[i];
+            if (i < namaKolom.length - 1) {
+                sql += ",";
+            }
+        }
+        sql += ") VALUES (";
+        for(int i = 0; i <= namaKolom.length - 1; i++){
+            sql += "?";
+            if (i < namaKolom.length - 1) {
+                sql += ",";
+            }
+        }
+        sql += ")";
+        ps = conn.prepareStatement(sql);
+        String ekstensi = "";
+        for(int i = 0; i <= isiKolom.length - 1; i++){
+            int x = isiKolom[i].lastIndexOf('.');
+            if(x > 0){
+                ekstensi = isiKolom[i].substring(x + 1);
+            }
+            if(ekstensi.equals("jpg") || ekstensi.equals("png") || ekstensi.equals("jpeg")){
+                ps.setBinaryStream(i+1, (InputStream) inputStream, (int)(gambar.length()));
+            } else {
+                ps.setString(i+1, isiKolom[i]);
+            }
+        } 
+        return ps.executeUpdate(); 
+    }
+    
+    
+    
+    // ------------------------------------ statement UPDATE
     public static int queryUpdate(String namaTabel, String[] namaKolom, String[] isiKolom, String kondisi){
         sql = "UPDATE " + namaTabel + " SET ";
         for (int i = 0; i <= namaKolom.length - 1; i++) {
@@ -92,4 +141,33 @@ public class QueryDatabase {
         sql += " WHERE " + kondisi;
         return eksekusiUpdate(sql);
     }
+    
+    public static int queryUpdate(String namaTabel, String[] namaKolom, String[] isiKolom, String namaGambar, String kondisi) throws FileNotFoundException, SQLException{
+        File gambar = new File(namaGambar);
+        inputStream = new FileInputStream(gambar);
+        conn = KoneksiDatabase.dapatkanKoneksi();
+        sql = "UPDATE " + namaTabel + " SET ";
+        for (int i = 0; i <= namaKolom.length - 1; i++) {
+            sql += namaKolom[i] + "='?'";
+            if (i < namaKolom.length - 1) {
+                sql += ", ";
+            }
+        }       
+        ps = conn.prepareStatement(sql);
+        String ekstensi = "";
+        for(int i = 0; i <= isiKolom.length - 1; i++){
+            int x = isiKolom[i].lastIndexOf('.');
+            if(x > 0){
+                ekstensi = isiKolom[i].substring(x + 1);
+            }
+            if(ekstensi.equals("jpg") || ekstensi.equals("png") || ekstensi.equals("jpeg")){
+                ps.setBinaryStream(i+1, (InputStream) inputStream, (int)(gambar.length()));
+            } else {
+                ps.setString(i+1, isiKolom[i]);
+            }
+        } 
+        return ps.executeUpdate(); 
+    }
+    
+    
 }
