@@ -5,20 +5,13 @@
  */
 package admin;
 
-import database.KoneksiDatabase;
-import java.sql.*;
-import javax.swing.JOptionPane;
-import database.QueryDatabase;
+import model.Admin;
 /**
  *
  * @author HP
  */
 public class AdminLogin extends javax.swing.JFrame {
 
-    private Connection conn;
-    private Statement st;
-    private ResultSet rs;
-    
     /**
      * Creates new form AdminLogin
      */
@@ -92,7 +85,7 @@ public class AdminLogin extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(228, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,29 +116,31 @@ public class AdminLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String username = jTextField1.getText();
-        String password = jPasswordField1.getText();
+//        String username = jTextField1.getText();
+//        String password = jPasswordField1.getText();
+//        
+//        try{
+//            rs = QueryDatabase.querySelectSemua("admin");
+//            while(rs.next()){
+//                String user = rs.getString("username");
+//                String pass = rs.getString("password");
+//                if(username.equals(user) && password.equals(pass)) {
+//                    JOptionPane.showMessageDialog(null, "selamat datang");
+//                    this.dispose();
+//                    new TambahKendaraan().setVisible(true);
+//                    break;
+//                } else { 
+//                    continue;
+//                }
+//            }     
+//            // setelah membuka koneksi jgn lupa ditutup
+//            KoneksiDatabase.tutupKoneksi();
+//        } catch(Exception ex){
+//            JOptionPane.showMessageDialog(null, ex);
+//        }
         
-        try{
-            rs = QueryDatabase.querySelectSemua("admin");
-            while(rs.next()){
-                String user = rs.getString("username");
-                String pass = rs.getString("password");
-                if(username.equals(user) && password.equals(pass)) {
-                    JOptionPane.showMessageDialog(null, "selamat datang");
-                    this.dispose();
-                    new TambahKendaraan().setVisible(true);
-                    break;
-                } else { 
-                    JOptionPane.showMessageDialog(null, "salah nama atau password"); 
-                    break;
-                }
-            }     
-            // setelah membuka koneksi jgn lupa ditutup
-            KoneksiDatabase.tutupKoneksi();
-        } catch(Exception ex){
-            JOptionPane.showMessageDialog(null, ex);
-        }
+        Admin admin = new Admin(jTextField1.getText(), jPasswordField1.getText());
+        admin.AdminLogin();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
