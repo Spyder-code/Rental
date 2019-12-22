@@ -65,21 +65,12 @@ public class QueryDatabase {
         sql = "SELECT * FROM " + namaTabel;
         return eksekusiQuery(sql);
     }
-    
-<<<<<<< HEAD
-     public static ResultSet querySelectKondisi(String namaTabel, String kondisi){
-=======
+
     public static ResultSet querySelectSemua(String namaTabel, String kondisi){
->>>>>>> refs/remotes/origin/master
         sql = "SELECT * FROM " + namaTabel + " WHERE " + kondisi;
         return eksekusiQuery(sql);
     }
     
-<<<<<<< HEAD
-    // statement DELETE
-=======
-    // ------------------------------------ statement DELETE
->>>>>>> refs/remotes/origin/master
     public static int queryHapus(String namaTabel, String kondisi) {
         sql = "DELETE FROM " + namaTabel + " WHERE " + kondisi;
         return eksekusiUpdate(sql);
