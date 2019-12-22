@@ -5,11 +5,19 @@
  */
 package admin;
 
+import model.Gambar;
 import database.KoneksiDatabase;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import database.QueryDatabase;
 import javax.swing.table.DefaultTableModel;
+//-------------------------
+import java.awt.Image;
+import javax.swing.JFileChooser;
+import java.io.File;
+import javax.swing.ImageIcon;
+//-------------------------
+import kendaraan.*;
 
 
 /**
@@ -69,10 +77,12 @@ public class TambahKendaraan extends javax.swing.JFrame {
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
+        lbImage = new javax.swing.JLabel();
+        btnImage = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 40)); // NOI18N
         jLabel1.setText("Form Kendaraan");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -140,6 +150,15 @@ public class TambahKendaraan extends javax.swing.JFrame {
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/backArrow.png"))); // NOI18N
         jButton5.setText("Kembali");
 
+        lbImage.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        btnImage.setText("Pilih Gambar");
+        btnImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImageActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -148,77 +167,65 @@ public class TambahKendaraan extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1)
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbImage, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField2))
+                                .addComponent(jButton1)
+                                .addGap(28, 28, 28)
+                                .addComponent(jButton2)
+                                .addGap(31, 31, 31)
+                                .addComponent(jButton3)
+                                .addGap(171, 171, 171)
+                                .addComponent(jButton5))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
-                                .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel7)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jTextField2))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel5)
+                                                .addComponent(jLabel6))
+                                            .addGap(18, 18, 18)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(jLabel1))
+                                .addGap(29, 29, 29)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
-                        .addComponent(jButton1)
-                        .addGap(48, 48, 48)
-                        .addComponent(jButton2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton5)
-                        .addGap(42, 42, 42)
-                        .addComponent(jButton3)
-                        .addGap(84, 84, 84))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(29, 29, 29))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(29, 29, 29))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel3))
+                                        .addGap(26, 26, 26)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3))
-                                .addGap(26, 26, 26)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextField3)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(68, 68, 68))))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextField3)
+                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 218, Short.MAX_VALUE)
+                        .addComponent(btnImage)))
+                .addGap(43, 43, 43))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(39, 39, 39)
                 .addComponent(jLabel1)
-                .addGap(72, 72, 72)
+                .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(33, 33, 33)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(1, 1, 1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -229,16 +236,30 @@ public class TambahKendaraan extends javax.swing.JFrame {
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(lbImage, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnImage)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
                     .addComponent(jButton5))
-                .addGap(52, 52, 52)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         pack();
@@ -247,79 +268,107 @@ public class TambahKendaraan extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int i = jTable1.getSelectedRow();
         if(i > -1){
-            String index = model.getValueAt(i, 0).toString();
+            String index = model.getValueAt(i, 0).toString();       
+            rs = QueryDatabase.querySelectSemua("kendaraan", "id_kendaraan = " + index);
             int input = JOptionPane.showConfirmDialog(null, "apakah anda yakin?");
-            if(input == 0){       
-                try{
-                    int hasil = QueryDatabase.queryHapus("kendaraan", "id_kendaraan = " + index);
-                    if(hasil > 0){
-                        JOptionPane.showMessageDialog(null, "data berhasil dihapus");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "data gagal dihapus");
+            if(input == 0){
+                try {
+                    while(rs.next()){
+                        String tipe = rs.getString("tipe");
+                        if(tipe.equals("1")){
+                            Motor motor = new Motor();
+                            int hasil = motor.hapusKendaraan("id_kendaraan = " + index);
+                            if(hasil > 0){
+                                JOptionPane.showMessageDialog(null, "data berhasil dihapus");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "data gagal dihapus");
+                            }
+                        } else {
+                            Mobil mobil = new Mobil();
+                            int hasil = mobil.hapusKendaraan("id_kendaraan = " + index);
+                            if(hasil > 0){
+                                JOptionPane.showMessageDialog(null, "data berhasil dihapus");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "data gagal dihapus");
+                            }
+                        }
                     }
-                    tampilkan();
-                    reset();
-                    KoneksiDatabase.tutupKoneksi();
-                } catch(Exception ex){
-                    JOptionPane.showMessageDialog(null, ex); 
-                }
-            }    
-        }    
+                } catch(Exception ex) {
+                    JOptionPane.showConfirmDialog(null, ex);
+                }    
+            }
+        }
+        try {
+            tampilkan();
+        } catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        reset();
+        lbImage.setIcon(null);
+        Gambar.kosongkanGambar();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String tipe = jComboBox1.getSelectedItem().toString();
-        String merek = jTextField1.getText();
-        String modell = jTextField2.getText();
-        String tahunProduksi = jTextField3.getText();
-        String platNomor = jTextField4.getText();
-        String hargaSewa = jTextField5.getText();
-
-        String[] isiKolom = {tipe, merek, modell, tahunProduksi, platNomor, hargaSewa};
-        String[] namaKolom = {"tipe", "merek", "model", "tahun_produksi", "plat_nomor", "harga_sewa"};
-        try{
-            int hasil = QueryDatabase.queryMasukan("kendaraan", namaKolom, isiKolom);
+        if(tipe.equals("1")){
+            Motor motor = new Motor(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(), jTextField4.getText(), Integer.parseInt(jTextField5.getText()), Gambar.getNamaGambar());
+            int hasil = motor.tambahKendaraan();
             if(hasil > 0){
                 JOptionPane.showMessageDialog(null, "data berhasil ditambah");
             } else {
-                JOptionPane.showMessageDialog(null, "data gagal ditambah!");
+                JOptionPane.showMessageDialog(null, "data gagal ditambah");
             }
+        } else{
+            Mobil mobil = new Mobil(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(), jTextField4.getText(), Integer.parseInt(jTextField5.getText()), Gambar.getNamaGambar());
+            int hasil = mobil.tambahKendaraan();
+            if(hasil > 0){
+                JOptionPane.showMessageDialog(null, "data berhasil ditambah");
+            } else {
+                JOptionPane.showMessageDialog(null, "data gagal ditambah");
+            }
+        }
+        try {
             tampilkan();
-            reset();
-            KoneksiDatabase.tutupKoneksi();
         } catch(Exception ex){
             JOptionPane.showMessageDialog(null, ex);
         }
+        reset();
+        lbImage.setIcon(null);
+        Gambar.kosongkanGambar();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String tipe = jComboBox1.getSelectedItem().toString();
-        String merek = jTextField1.getText();
-        String modell = jTextField2.getText();
-        String tahunProduksi = jTextField3.getText();
-        String platNomor = jTextField4.getText();
-        String hargaSewa = jTextField5.getText();
-
-        String[] isiKolom = {tipe, merek, modell, tahunProduksi, platNomor, hargaSewa};
-        String[] namaKolom = {"tipe", "merek", "model", "tahun_produksi", "plat_nomor", "harga_sewa"};
         int i = jTable1.getSelectedRow();
         if(i > -1){
             String index = model.getValueAt(i, 0).toString();
-            try{
-                int hasil = QueryDatabase.queryUpdate("kendaraan", namaKolom, isiKolom, "id_kendaraan = " + index);
+            if(tipe.equals("1")){
+                Motor motor = new Motor(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(), jTextField4.getText(), Integer.parseInt(jTextField5.getText()), Gambar.getNamaGambar());
+                int hasil = motor.ubahKendaraan("id_kendaraan = " + index);
                 if(hasil > 0){
                     JOptionPane.showMessageDialog(null, "data berhasil diubah");
                 } else{
                     JOptionPane.showMessageDialog(null, "data gagal diubah!");   
                 }
-                tampilkan();
-                reset();
-                KoneksiDatabase.tutupKoneksi();
-            } catch(Exception ex){
-                JOptionPane.showMessageDialog(null, ex);
+            } else {
+                Mobil mobil = new Mobil(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(), jTextField4.getText(), Integer.parseInt(jTextField5.getText()), Gambar.getNamaGambar());
+                int hasil = mobil.ubahKendaraan("id_kendaraan = " + index);
+                if(hasil > 0){
+                    JOptionPane.showMessageDialog(null, "data berhasil diubah");
+                } else{
+                    JOptionPane.showMessageDialog(null, "data gagal diubah!");   
+                }
             }
         }
-        
+        try {
+            tampilkan();
+        } catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        reset();
+        lbImage.setIcon(null);
+        Gambar.kosongkanGambar();
+              
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -332,6 +381,13 @@ public class TambahKendaraan extends javax.swing.JFrame {
             jTextField5.setText(model.getValueAt(i, 6).toString());
         }
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void btnImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImageActionPerformed
+        String namaGambar = dapatkanGambar();
+        Gambar.setNamaGambar(namaGambar);
+        ImageIcon img = new ImageIcon(new ImageIcon(namaGambar).getImage().getScaledInstance(lbImage.getWidth(), lbImage.getHeight(), Image.SCALE_SMOOTH));
+        lbImage.setIcon(img);
+    }//GEN-LAST:event_btnImageActionPerformed
 
     /**
      * @param args the command line arguments
@@ -369,6 +425,7 @@ public class TambahKendaraan extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnImage;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -388,8 +445,10 @@ public class TambahKendaraan extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JLabel lbImage;
     // End of variables declaration//GEN-END:variables
 
+    // Function bantuan
     private void tampilkan() throws SQLException {
         int row = jTable1.getRowCount();
         for(int a=0; a<row; a++){
@@ -413,4 +472,13 @@ public class TambahKendaraan extends javax.swing.JFrame {
         jTextField4.setText("");
         jTextField5.setText("");
     }
+    
+    private String dapatkanGambar(){
+        JFileChooser chooser = new JFileChooser();
+        chooser.showOpenDialog(null);
+        File f = chooser.getSelectedFile();
+        String namaFile = f.getAbsolutePath();
+        return namaFile;
+    }
+    
 }
