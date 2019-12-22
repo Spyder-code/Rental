@@ -116,29 +116,6 @@ public class AdminLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-//        String username = jTextField1.getText();
-//        String password = jPasswordField1.getText();
-//        
-//        try{
-//            rs = QueryDatabase.querySelectSemua("admin");
-//            while(rs.next()){
-//                String user = rs.getString("username");
-//                String pass = rs.getString("password");
-//                if(username.equals(user) && password.equals(pass)) {
-//                    JOptionPane.showMessageDialog(null, "selamat datang");
-//                    this.dispose();
-//                    new TambahKendaraan().setVisible(true);
-//                    break;
-//                } else { 
-//                    continue;
-//                }
-//            }     
-//            // setelah membuka koneksi jgn lupa ditutup
-//            KoneksiDatabase.tutupKoneksi();
-//        } catch(Exception ex){
-//            JOptionPane.showMessageDialog(null, ex);
-//        }
-        
         Admin admin = new Admin(jTextField1.getText(), jPasswordField1.getText());
         admin.AdminLogin();
     }//GEN-LAST:event_jButton1ActionPerformed

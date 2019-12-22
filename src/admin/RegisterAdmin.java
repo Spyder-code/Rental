@@ -5,10 +5,6 @@
  */
 package admin;
 
-//import database.KoneksiDatabase;
-//import java.sql.*;
-//import javax.swing.JOptionPane;
-//import database.QueryDatabase;
 import model.Admin;
 /**
  *
@@ -16,10 +12,6 @@ import model.Admin;
  */
 public class RegisterAdmin extends javax.swing.JFrame {
 
-//    private Connection conn;
-//    private Statement st;
-//    private ResultSet rs;
-    
     /**
      * Creates new form RegisterAdmin
      */
@@ -166,23 +158,6 @@ public class RegisterAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-//        String nama = jTextField1.getText();
-//        String username = jTextField2.getText();
-//        String password = jPasswordField1.getText();
-//        
-//        String[] namaKolom = {"nama", "username", "password"};
-//        String[] isiKolom = {nama, username, password};
-//        try{
-//            int hasil = QueryDatabase.queryMasukan("admin", namaKolom, isiKolom);
-//            if(hasil > 0){
-//                JOptionPane.showMessageDialog(null, "data berhasil ditambah");
-//            } else {
-//                JOptionPane.showMessageDialog(null, "data gagal ditambah!");
-//            }
-//        } catch(Exception ex){
-//            JOptionPane.showMessageDialog(null, ex); 
-//        }
-        
         Admin admin = new Admin(jTextField1.getText(), jTextField2.getText(), jPasswordField1.getText());
         String[] namaKolom = {"nama", "username", "password"};
         admin.RegisterAdmin(namaKolom);
