@@ -54,6 +54,11 @@ public class QueryDatabase {
         return eksekusiQuery(sql);
     }
     
+     public static ResultSet querySelectKondisi(String namaTabel, String kondisi){
+        sql = "SELECT * FROM " + namaTabel + " WHERE " + kondisi;
+        return eksekusiQuery(sql);
+    }
+    
     // statement DELETE
     public static int queryHapus(String namaTabel, String kondisi) {
         sql = "DELETE FROM " + namaTabel + " WHERE " + kondisi;

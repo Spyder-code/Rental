@@ -4,18 +4,46 @@
  * and open the template in the editor.
  */
 package peminjamankendaraan;
-
+import database.QueryDatabase;
+import java.awt.Image.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.*;
+import java.util.Vector;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author HP
  */
 public class Mobil extends javax.swing.JFrame {
-
+       // buat tabel
+    DefaultTableModel model;
+    // buat koneksi
+    private Connection conn;
+    private Statement st;
+    private ResultSet rs;
+    private Vector<JLabel> veclabels = new Vector<JLabel>();
     /**
      * Creates new form UserHome
      */
     public Mobil() {
         initComponents();
+       
+        // buat sendiri
+        String[] judul = {""};
+        model = new DefaultTableModel(judul, 0);
+        jTable.setModel(model);
+        try {   
+            tampilkan();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
     }
 
     /**
@@ -31,29 +59,24 @@ public class Mobil extends javax.swing.JFrame {
         jTree1 = new javax.swing.JTree();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
+        merk = new javax.swing.JLabel();
+        nama = new javax.swing.JLabel();
+        tahun = new javax.swing.JLabel();
+        harga = new javax.swing.JLabel();
+        plat = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
 
         jScrollPane1.setViewportView(jTree1);
 
@@ -64,10 +87,6 @@ public class Mobil extends javax.swing.JFrame {
 
         jLabel1.setText("MOBIL");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 50, -1));
-
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\HP\\Pictures\\Banner youtube.jpg")); // NOI18N
-        jLabel4.setText("                                Gambar");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, 113, 74));
 
         jLabel5.setText("Tahun Produksi      :");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 334, 101, 20));
@@ -92,21 +111,11 @@ public class Mobil extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(419, 389, 196, 36));
-
-        jLabel10.setText("jLabel10");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 294, 130, 20));
-
-        jLabel11.setText("jLabel10");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 314, 130, 20));
-
-        jLabel12.setText("jLabel10");
-        getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 334, 130, 20));
-
-        jLabel13.setText("jLabel10");
-        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 354, 130, 20));
-
-        jLabel14.setText("jLabel10");
-        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 274, 130, 20));
+        getContentPane().add(merk, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 294, 130, 20));
+        getContentPane().add(nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 314, 130, 20));
+        getContentPane().add(tahun, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 334, 130, 20));
+        getContentPane().add(harga, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 354, 130, 20));
+        getContentPane().add(plat, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 274, 130, 20));
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setPreferredSize(new java.awt.Dimension(0, 1));
@@ -144,34 +153,6 @@ public class Mobil extends javax.swing.JFrame {
         jLabel15.setText("                                Gambar");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(413, 68, 240, 171));
 
-        jLabel16.setIcon(new javax.swing.ImageIcon("C:\\Users\\HP\\Pictures\\Banner youtube.jpg")); // NOI18N
-        jLabel16.setText("                                Gambar");
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 340, 113, 74));
-
-        jLabel17.setIcon(new javax.swing.ImageIcon("C:\\Users\\HP\\Pictures\\Banner youtube.jpg")); // NOI18N
-        jLabel17.setText("                                Gambar");
-        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 113, 74));
-
-        jLabel18.setIcon(new javax.swing.ImageIcon("C:\\Users\\HP\\Pictures\\Banner youtube.jpg")); // NOI18N
-        jLabel18.setText("                                Gambar");
-        getContentPane().add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 113, 74));
-
-        jLabel19.setIcon(new javax.swing.ImageIcon("C:\\Users\\HP\\Pictures\\Banner youtube.jpg")); // NOI18N
-        jLabel19.setText("                                Gambar");
-        getContentPane().add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 250, 113, 74));
-
-        jLabel20.setIcon(new javax.swing.ImageIcon("C:\\Users\\HP\\Pictures\\Banner youtube.jpg")); // NOI18N
-        jLabel20.setText("                                Gambar");
-        getContentPane().add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, 113, 74));
-
-        jLabel21.setIcon(new javax.swing.ImageIcon("C:\\Users\\HP\\Pictures\\Banner youtube.jpg")); // NOI18N
-        jLabel21.setText("                                Gambar");
-        getContentPane().add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 113, 74));
-
-        jLabel22.setIcon(new javax.swing.ImageIcon("C:\\Users\\HP\\Pictures\\Banner youtube.jpg")); // NOI18N
-        jLabel22.setText("                                Gambar");
-        getContentPane().add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, 113, 74));
-
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/backArrow.png"))); // NOI18N
         jButton2.setText("Kembali ");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -181,11 +162,39 @@ public class Mobil extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 450, -1, -1));
 
+        jTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                ""
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Byte.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTable);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 270, 100));
+
+        jLabel3.setText("jLabel3");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 240, 130, 100));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+          konfirmasi a = new konfirmasi();
+      a.setVisible(true);
+      this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -229,26 +238,44 @@ public class Mobil extends javax.swing.JFrame {
             }
         });
     }
+    
+//    public void createLabel(String text, String name, Dimension size, Point location){
+//        JLabel label = new JLabel();
+//        label.setName("a");
+//        label.setSize(80, 80);
+//        label.setLocation(null);
+//        vecLabels.add
+//    }
+    
+    private void tampilkan() throws SQLException {
+        int row = jTable.getRowCount();
+        for(int a=0; a<row; a++){
+            model.removeRow(0);
+        }
+        try {
+            rs = QueryDatabase.querySelectSemua("kendaraan");
+            while(rs.next()){
+//                Blob blob = rs.getBlob("image");
+//                Byte [] data = rs.getByte(9);
+//                ImageIcon image = new ImageIcon(data);
+//              
+////                 Blob [] foto = {rs.getBlob(9)};
+//
+//            model.addRow(data);
+            }    
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel harga;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -257,6 +284,12 @@ public class Mobil extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable;
     private javax.swing.JTree jTree1;
+    private javax.swing.JLabel merk;
+    private javax.swing.JLabel nama;
+    private javax.swing.JLabel plat;
+    private javax.swing.JLabel tahun;
     // End of variables declaration//GEN-END:variables
 }
