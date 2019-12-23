@@ -5,12 +5,28 @@
  */
 package peminjamankendaraan;
 
+import database.QueryDatabase;
+import java.awt.Image;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author HP
  */
 public class Motor extends javax.swing.JFrame {
-
+ private Connection conn;
+    private Statement st;
+    private ResultSet rs;
+    private int idKendaraan;
+    private int biaya;
+    private int idp;
     /**
      * Creates new form Motor
      */
@@ -34,50 +50,60 @@ public class Motor extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
+        merk = new javax.swing.JLabel();
+        nama = new javax.swing.JLabel();
+        tahun = new javax.swing.JLabel();
+        totalBiaya = new javax.swing.JLabel();
+        plat = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel15 = new javax.swing.JLabel();
+        imagelbl = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        datePinjam = new com.toedter.calendar.JDateChooser();
+        jLabel2 = new javax.swing.JLabel();
+        dateKembali = new com.toedter.calendar.JDateChooser();
+        jLabel10 = new javax.swing.JLabel();
+        harga = new javax.swing.JLabel();
+        harga2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setText("Motor");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 135, -1));
 
         jLabel5.setText("Tahun Produksi      :");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 280, 131, 20));
 
         jLabel6.setText("Plat nomor              :");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 220, 131, 20));
 
         jLabel7.setText("Merk                       :");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 240, 131, 20));
 
         jLabel8.setText("Nama                      :");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 260, 131, 20));
 
         jLabel9.setText("Harga Sewa/hari    :");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 300, 131, 20));
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton1.setText("Pilih");
+        jButton1.setText("SEWA");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-
-        jLabel10.setText("jLabel10");
-
-        jLabel11.setText("jLabel10");
-
-        jLabel12.setText("jLabel10");
-
-        jLabel13.setText("jLabel10");
-
-        jLabel14.setText("jLabel10");
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 420, 196, 36));
+        getContentPane().add(merk, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 240, 130, 20));
+        getContentPane().add(nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 260, 130, 20));
+        getContentPane().add(tahun, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 280, 130, 20));
+        getContentPane().add(totalBiaya, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 390, 130, 20));
+        getContentPane().add(plat, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 220, 130, 20));
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 0));
         jPanel2.setPreferredSize(new java.awt.Dimension(1, 100));
@@ -93,8 +119,11 @@ public class Motor extends javax.swing.JFrame {
             .addGap(0, 430, Short.MAX_VALUE)
         );
 
-        jLabel15.setIcon(new javax.swing.ImageIcon("C:\\Users\\HP\\Pictures\\Banner youtube.jpg")); // NOI18N
-        jLabel15.setText("                                Gambar");
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(358, 70, 9, 430));
+
+        imagelbl.setIcon(new javax.swing.ImageIcon("C:\\Users\\HP\\Pictures\\Banner youtube.jpg")); // NOI18N
+        imagelbl.setText("                                Gambar");
+        getContentPane().add(imagelbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, 240, 171));
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/backArrow.png"))); // NOI18N
         jButton2.setText("Kembali ");
@@ -103,12 +132,23 @@ public class Motor extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 448, -1, -1));
 
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/Motor/vario-merah.jpg"))); // NOI18N
         jLabel16.setText("                                Gambar");
+        jLabel16.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel16MouseClicked(evt);
+            }
+        });
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/Motor/jupiter-merah.jpg"))); // NOI18N
         jLabel4.setText("                                Gambar");
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -133,111 +173,68 @@ public class Motor extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(jPanel1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(327, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(229, 229, 229))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 25, Short.MAX_VALUE)
-                    .addComponent(jButton2)
-                    .addGap(226, 226, 226)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 9, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(41, 41, 41)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(7, 7, 7)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(19, 19, 19)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(7, 7, 7)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(19, 19, 19)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(7, 7, 7)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(19, 19, 19)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(7, 7, 7)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(19, 19, 19)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(7, 7, 7)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(19, 19, 19)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(6, 6, 6)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGap(0, 26, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(71, 71, 71))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 66, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(382, 382, 382)
-                            .addComponent(jButton2))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(4, 4, 4)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(35, 35, 35)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(15, 15, 15)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGap(0, 9, Short.MAX_VALUE)))
-        );
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 72, -1, -1));
+        getContentPane().add(datePinjam, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 330, 182, -1));
+
+        jLabel2.setText("Tanggal pinjam   ");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 330, 89, -1));
+        getContentPane().add(dateKembali, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 360, 182, -1));
+
+        jLabel10.setText("Tanggal kembali  ");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 360, 89, -1));
+        getContentPane().add(harga, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 300, 130, 20));
+        getContentPane().add(harga2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 300, 130, 20));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+       
+        int id = this.getIdKendaraan();
+        int hasil = this.getBiaya();
+          this.setKendaraan(id);
+          Penyewa a = new Penyewa();
+          a.setId(id);
+          String tampilan = "yyyy-MM-dd";
+          SimpleDateFormat fm = new SimpleDateFormat(tampilan);
+          String tglPinjam = String.valueOf(fm.format(datePinjam.getDate()));
+          String tglKembali = String.valueOf(fm.format(dateKembali.getDate()));
+         String[] namaKolom = {"ID_KENDARAAN", "ID_ADMIN", "ID_PEMINJAM", "HARGA","TOTAL_BIAYA","TGL_PINJAM","TGL_KEMBALI"};
+        String[] isiKolomSewa = {Integer.toString(id),"1",Integer.toString(peminjam()),Integer.toString(hasil),Integer.toString(hasil),tglPinjam,tglKembali};
+        QueryDatabase.queryMasukan("detail_peminjaman", namaKolom, isiKolomSewa);
+        notifikasi b = new notifikasi();
+      b.setVisible(true);
+      this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Home a = new Home();
+        DaftarKendaraan a = new DaftarKendaraan();
         a.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jLabel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseClicked
+        this.setKendaraan(5);
+    }//GEN-LAST:event_jLabel16MouseClicked
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+       this.setKendaraan(6);
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    public int peminjam(){
+         Penyewa ab = new Penyewa();
+       String namaa= ab.peminjam();
+          try {
+            rs = QueryDatabase.querySelectSemua("peminjam","NAMA= "+namaa);
+            while(rs.next()){
+             this.setIdp(rs.getInt("ID_PEMINJAM")); 
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Mobil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          return getIdp();
+    }
     /**
      * @param args the command line arguments
      */
@@ -272,18 +269,42 @@ public class Motor extends javax.swing.JFrame {
             }
         });
     }
+     public void setKendaraan(int id){
+         try {
+            rs = QueryDatabase.querySelectSemua("kendaraan", "ID_KENDARAAN = "+id);
+            while(rs.next()){
+            merk.setText(rs.getString("MEREK"));
+            plat.setText(rs.getString("PLAT_NOMOR"));
+            nama.setText(rs.getString("MODEL"));
+            tahun.setText(rs.getString("TAHUN_PRODUKSI"));
+            harga.setText(rs.getString("HARGA_SEWA"));
+            byte[] img = rs.getBytes("GAMBAR");
+            ImageIcon image = new ImageIcon(img);
+            Image im = image.getImage();
+            Image myImg = im.getScaledInstance(imagelbl.getWidth(), imagelbl.getHeight(),Image.SCALE_SMOOTH);
+            ImageIcon newImage = new ImageIcon(myImg);
+            imagelbl.setIcon(newImage);
+            this.setIdKendaraan(id);
+            this.setBiaya(rs.getInt("HARGA_SEWA"));
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Mobil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.toedter.calendar.JDateChooser dateKembali;
+    private com.toedter.calendar.JDateChooser datePinjam;
+    private javax.swing.JLabel harga;
+    private javax.swing.JLabel harga2;
+    private javax.swing.JLabel imagelbl;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -293,5 +314,52 @@ public class Motor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel merk;
+    private javax.swing.JLabel nama;
+    private javax.swing.JLabel plat;
+    private javax.swing.JLabel tahun;
+    private javax.swing.JLabel totalBiaya;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the idKendaraan
+     */
+    public int getIdKendaraan() {
+        return idKendaraan;
+    }
+
+    /**
+     * @param idKendaraan the idKendaraan to set
+     */
+    public void setIdKendaraan(int idKendaraan) {
+        this.idKendaraan = idKendaraan;
+    }
+
+    /**
+     * @return the biaya
+     */
+    public int getBiaya() {
+        return biaya;
+    }
+
+    /**
+     * @param biaya the biaya to set
+     */
+    public void setBiaya(int biaya) {
+        this.biaya = biaya;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getIdp() {
+        return idp;
+    }
+
+    /**
+     * @param idp the id to set
+     */
+    public void setIdp(int idp) {
+        this.idp = idp;
+    }
 }

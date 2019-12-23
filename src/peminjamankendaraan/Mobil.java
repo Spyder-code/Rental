@@ -6,6 +6,13 @@
 package peminjamankendaraan;
 import database.QueryDatabase;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import database.KoneksiDatabase;
+import java.awt.Image;
+import java.text.SimpleDateFormat;
+import javax.swing.ImageIcon;
+import model.Gambar;
 
 /**
  *
@@ -16,6 +23,9 @@ public class Mobil extends javax.swing.JFrame {
     private Connection conn;
     private Statement st;
     private ResultSet rs;
+    private int idKendaraan;
+    private int biaya;
+        private int idp;
     /**
      * Creates new form UserHome
      */
@@ -53,7 +63,7 @@ public class Mobil extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
-        jLabel16 = new javax.swing.JLabel();
+        imagelbl = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jPanel3 = new javax.swing.JPanel();
@@ -61,6 +71,10 @@ public class Mobil extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
+        datePinjam = new com.toedter.calendar.JDateChooser();
+        dateKembali = new com.toedter.calendar.JDateChooser();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         jScrollPane1.setViewportView(jTree1);
 
@@ -72,34 +86,34 @@ public class Mobil extends javax.swing.JFrame {
         jLabel1.setText("MOBIL");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 50, -1));
 
-        jLabel5.setText("Tahun Produksi      :");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 334, 101, 20));
+        jLabel5.setText("Tahun Produksi         :");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 290, 130, 20));
 
-        jLabel6.setText("Plat nomor              :");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 274, 101, 20));
+        jLabel6.setText("Plat nomor                :");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 230, 130, 20));
 
-        jLabel7.setText("Merk                       :");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 294, 101, 20));
+        jLabel7.setText("Merk                         :");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 250, 130, 20));
 
-        jLabel8.setText("Nama                      :");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 314, 101, 20));
+        jLabel8.setText("Nama                        :");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 270, 130, 20));
 
-        jLabel9.setText("Harga Sewa/hari    :");
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 354, 101, 20));
+        jLabel9.setText("Harga Sewa/hari       :");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 310, 130, 20));
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton1.setText("Pilih");
+        jButton1.setText("SEWA");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(419, 389, 196, 36));
-        getContentPane().add(merk, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 294, 130, 20));
-        getContentPane().add(nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 314, 130, 20));
-        getContentPane().add(tahun, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 334, 130, 20));
-        getContentPane().add(harga, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 354, 130, 20));
-        getContentPane().add(plat, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 274, 130, 20));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 430, 196, 36));
+        getContentPane().add(merk, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 250, 130, 20));
+        getContentPane().add(nama, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 270, 130, 20));
+        getContentPane().add(tahun, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 290, 130, 20));
+        getContentPane().add(harga, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 310, 130, 20));
+        getContentPane().add(plat, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 230, 130, 20));
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setPreferredSize(new java.awt.Dimension(0, 1));
@@ -142,25 +156,45 @@ public class Mobil extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 450, -1, -1));
 
-        jLabel16.setText("                                Gambar");
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(413, 68, 240, 171));
+        imagelbl.setText("                                Gambar");
+        getContentPane().add(imagelbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, 240, 171));
 
         jLabel17.setIcon(new javax.swing.ImageIcon("C:\\Users\\HP\\Pictures\\Banner youtube.jpg")); // NOI18N
         jLabel17.setText("                                Gambar");
-        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(413, 68, 240, 171));
+        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, 240, 171));
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/Mobil/aventador-kuning.jpg"))); // NOI18N
         jLabel15.setText("                                Gambar");
         jLabel15.setPreferredSize(new java.awt.Dimension(60, 60));
+        jLabel15.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel15MouseClicked(evt);
+            }
+        });
 
         jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/Mobil/avanza-hitam.jpg"))); // NOI18N
         jLabel18.setText("                                Gambar");
+        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel18MouseClicked(evt);
+            }
+        });
 
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/Mobil/corola-putih.jpg"))); // NOI18N
         jLabel19.setText("                                Gambar");
+        jLabel19.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel19MouseClicked(evt);
+            }
+        });
 
         jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/Mobil/rx-7-merah.jpg"))); // NOI18N
         jLabel20.setText("                                Gambar");
+        jLabel20.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel20MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -194,21 +228,55 @@ public class Mobil extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jPanel3);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 320, 360));
+        getContentPane().add(datePinjam, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 350, 160, -1));
+        getContentPane().add(dateKembali, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 390, 160, -1));
+
+        jLabel3.setText("Tanggal kembali");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 390, -1, -1));
+
+        jLabel4.setText("Tanggal pinjam");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 350, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-          Penyewa a = new Penyewa();
-      a.setVisible(true);
+        int id = this.getIdKendaraan();
+        int hasil = this.getBiaya();
+          this.setKendaraan(id);
+           String tampilan = "yyyy-MM-dd";
+          SimpleDateFormat fm = new SimpleDateFormat(tampilan);
+          String tglPinjam = String.valueOf(fm.format(datePinjam.getDate()));
+          String tglKembali = String.valueOf(fm.format(dateKembali.getDate()));
+         String[] namaKolom = {"ID_KENDARAAN", "ID_ADMIN", "ID_PEMINJAM", "HARGA","TOTAL_BIAYA","TGL_PINJAM","TGL_KEMBALI"};
+        String[] isiKolomSewa = {Integer.toString(id),"1",Integer.toString(peminjam()),Integer.toString(hasil),Integer.toString(hasil),tglPinjam,tglKembali};
+        QueryDatabase.queryMasukan("detail_peminjaman", namaKolom, isiKolomSewa);
+        notifikasi b = new notifikasi();
+      b.setVisible(true);
       this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-      Home a = new Home();
-      a.setVisible(true);
-      this.setVisible(false);
+      
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
+        this.setKendaraan(2);
+    }//GEN-LAST:event_jLabel15MouseClicked
+
+    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
+        this.setKendaraan(1);
+    }//GEN-LAST:event_jLabel18MouseClicked
+
+    private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
+       this.setKendaraan(4);
+    }//GEN-LAST:event_jLabel19MouseClicked
+
+    private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
+       this.setKendaraan(3);
+    }//GEN-LAST:event_jLabel20MouseClicked
 
     /**
      * @param args the command line arguments
@@ -246,29 +314,63 @@ public class Mobil extends javax.swing.JFrame {
         });
     }
     
-//    public void createLabel(String text, String name, Dimension size, Point location){
-//        JLabel label = new JLabel();
-//        label.setName("a");
-//        label.setSize(80, 80);
-//        label.setLocation(null);
-//        vecLabels.add
-//    }
+    public int peminjam(){
+         Penyewa ab = new Penyewa();
+       String namaa= ab.peminjam();
+          try {
+            rs = QueryDatabase.querySelectSemua("peminjam","NAMA= "+namaa);
+            while(rs.next()){
+             this.setIdp(rs.getInt("ID_PEMINJAM")); 
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Mobil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          return getIdp();
+    }
     
+ public void setKendaraan(int id){
+        try {
+            rs = QueryDatabase.querySelectSemua("kendaraan", "ID_KENDARAAN = "+id);
+            while(rs.next()){
+            merk.setText(rs.getString("MEREK"));
+            plat.setText(rs.getString("PLAT_NOMOR"));
+            nama.setText(rs.getString("MODEL"));
+            tahun.setText(rs.getString("TAHUN_PRODUKSI"));
+            harga.setText(rs.getString("HARGA_SEWA"));
+            byte[] img = rs.getBytes("GAMBAR");
+            ImageIcon image = new ImageIcon(img);
+            Image im = image.getImage();
+            Image myImg = im.getScaledInstance(imagelbl.getWidth(), imagelbl.getHeight(),Image.SCALE_SMOOTH);
+            ImageIcon newImage = new ImageIcon(myImg);
+            imagelbl.setIcon(newImage);
+            this.setIdKendaraan(id);
+            this.setBiaya(rs.getInt("HARGA_SEWA"));
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Mobil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private com.toedter.calendar.JDateChooser dateKembali;
+    private com.toedter.calendar.JDateChooser datePinjam;
     private javax.swing.JLabel harga;
+    private javax.swing.JLabel imagelbl;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -285,4 +387,47 @@ public class Mobil extends javax.swing.JFrame {
     private javax.swing.JLabel plat;
     private javax.swing.JLabel tahun;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the idKendaraan
+     */
+    public int getIdKendaraan() {
+        return idKendaraan;
+    }
+
+    /**
+     * @param idKendaraan the idKendaraan to set
+     */
+    public void setIdKendaraan(int idKendaraan) {
+        this.idKendaraan = idKendaraan;
+    }
+
+    /**
+     * @return the biaya
+     */
+    public int getBiaya() {
+        return biaya;
+    }
+
+    /**
+     * @param biaya the biaya to set
+     */
+    public void setBiaya(int biaya) {
+        this.biaya = biaya;
+    }
+
+    /**
+     * @return the idp
+     */
+    public int getIdp() {
+        return idp;
+    }
+
+    /**
+     * @param idp the idp to set
+     */
+    public void setIdp(int idp) {
+        this.idp = idp;
+    }
 }
+

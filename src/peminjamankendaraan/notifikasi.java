@@ -5,17 +5,28 @@
  */
 package peminjamankendaraan;
 
+import database.QueryDatabase;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author HP
  */
-public class notifikasi extends javax.swing.JFrame {
-
+public final class notifikasi extends javax.swing.JFrame {
+private Connection conn;
+    private Statement st;
+    private ResultSet rs;
     /**
      * Creates new form notifikasi
      */
     public notifikasi() {
         initComponents();
+          setNomorSewa();
     }
 
     /**
@@ -30,7 +41,8 @@ public class notifikasi extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        noSewa = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -44,11 +56,25 @@ public class notifikasi extends javax.swing.JFrame {
         jLabel3.setText("menunjukkan nomor sewa dibawah ini:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, -1, -1));
 
-        jLabel4.setText("                              No sewa");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, 230, 110));
+        noSewa.setFont(new java.awt.Font("Tahoma", 0, 60)); // NOI18N
+        getContentPane().add(noSewa, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 110, 200, 110));
+
+        jButton1.setText("Confirm");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 250, 90, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Home a = new Home();
+        a.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -84,11 +110,28 @@ public class notifikasi extends javax.swing.JFrame {
             }
         });
     }
+    
+    
+    public void setNomorSewa(){
+        Penyewa a = new Penyewa();
+        int id = a.getId();
+        try {
+            rs = QueryDatabase.querySelectSemua("detail_peminjaman", "ID_PEMINJAM = "+id);
+            while(rs.next()){
+            noSewa.setText(rs.getString("ID_PEMINJAMAN"));
+            
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Mobil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel noSewa;
     // End of variables declaration//GEN-END:variables
 }

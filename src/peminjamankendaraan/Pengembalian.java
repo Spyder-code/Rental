@@ -5,19 +5,30 @@
  */
 package peminjamankendaraan;
 
+import database.KoneksiDatabase;
+import database.QueryDatabase;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author HP
  */
 public class Pengembalian extends javax.swing.JFrame {
-
+    public int id;
+     private Connection conn;
+    private Statement st;
+    private ResultSet rs;
     /**
      * Creates new form Pengembalian
      */
     public Pengembalian() {
         initComponents();
+        
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,13 +38,14 @@ public class Pengembalian extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
+        nota = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 120, 223, 30));
+        getContentPane().add(nota, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 120, 223, 30));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Masukan nomor nota transaksi anda !");
@@ -45,14 +57,46 @@ public class Pengembalian extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 180, 80, -1));
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/backArrow.png"))); // NOI18N
+        jButton2.setText("Kembali");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+              int nomor = Integer.parseInt(nota.getText());         
+        try{
+            rs = QueryDatabase.querySelectSemua("detail_peminjaman");
+            while(rs.next()){
+                int idPeminjam = rs.getInt("ID_PEMINJAMAN");
+                if(nomor==idPeminjam) {
+                    JOptionPane.showMessageDialog(null, "Terima kasih sudah mengembalikan");
+                    this.dispose();
+                    this.setId(nomor);
+                    new detailPengembalian().setVisible(true);
+//                    break;
+                } else { 
+                    continue;
+                }
+            }     
+        } catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Home a = new Home();
+       a.setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -89,9 +133,30 @@ public class Pengembalian extends javax.swing.JFrame {
         });
     }
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField nota;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+    
+    public int idPengembalian(){
+       int nomor = Integer.parseInt(nota.getText());
+        return nomor;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public final void setId(int id) {
+        this.id = id;
+    }
 }
